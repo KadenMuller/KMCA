@@ -15,7 +15,7 @@
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.6; color: var(--dark-gray); scroll-behavior: smooth; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.6; color: var(--dark-gray); background-color: #f1f5f9; }
 
         /* --- TYPOGRAPHY --- */
         h1, h2, h3 { font-family: 'Georgia', serif; color: var(--primary); }
@@ -34,16 +34,10 @@
             z-index: 1000;
             box-shadow: 0 2px 10px rgba(0,0,0,0.3);
         }
-        .logo { font-size: 1.5rem; font-weight: bold; letter-spacing: 1px; display: flex; align-items: center; gap: 10px; }
+        .logo { font-size: 1.5rem; font-weight: bold; letter-spacing: 1px; cursor: pointer; }
         .logo span { color: white; }
-        
-        .nav-links a { margin-left: 2rem; color: var(--light); font-weight: 500; position: relative; }
-        .nav-links a::after {
-            content: ''; position: absolute; width: 0; height: 2px; bottom: -5px; left: 0;
-            background-color: var(--accent); transition: width 0.3s;
-        }
+        .nav-links a { margin-left: 2rem; color: var(--light); font-weight: 500; cursor: pointer; }
         .nav-links a:hover { color: var(--accent); }
-        .nav-links a:hover::after { width: 100%; }
         
         .cta-btn {
             background: var(--accent);
@@ -54,12 +48,22 @@
         }
         .cta-btn:hover { background: white; }
 
-        /* --- HERO SECTION --- */
+        /* --- VIEWS MANAGEMENT --- */
+        /* This handles switching between the Home page and the Course Viewer */
+        .view-section { display: block; animation: fadeIn 0.5s; }
+        .hidden { display: none !important; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* --- HOME: HERO SECTION --- */
         header {
             background: linear-gradient(rgba(15, 23, 42, 0.9), rgba(15, 23, 42, 0.8)), url('https://images.unsplash.com/photo-1529699211952-734e80c4d42b?ixlib=rb-1.2.1&auto=format&fit=crop&w=1351&q=80');
             background-size: cover;
             background-position: center;
-            height: 85vh;
+            height: 80vh;
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -69,7 +73,6 @@
             padding: 0 20px;
         }
         header h1 { color: var(--light); font-size: 3.5rem; margin-bottom: 1rem; text-shadow: 2px 2px 4px rgba(0,0,0,0.5); }
-        header p { font-size: 1.2rem; max-width: 600px; margin-bottom: 2rem; color: #cbd5e1; }
         .hero-btn {
             background: var(--accent);
             color: var(--primary);
@@ -78,66 +81,14 @@
             border-radius: 5px;
             font-weight: bold;
             border: 2px solid var(--accent);
+            cursor: pointer;
         }
         .hero-btn:hover { background: transparent; color: var(--accent); }
 
-        /* --- DAILY INSIGHT WIDGET --- */
-        .insight-section {
-            background: var(--primary);
-            color: white;
-            padding: 3rem 10%;
-            text-align: center;
-            border-bottom: 4px solid var(--accent);
-        }
-        .insight-box {
-            border: 1px solid var(--accent);
-            padding: 2rem;
-            max-width: 800px;
-            margin: 0 auto;
-            border-radius: 8px;
-            background: rgba(255, 255, 255, 0.05);
-        }
-        #insight-text { font-style: italic; font-size: 1.2rem; margin-bottom: 1rem; display: block; }
-        .refresh-btn {
-            background: transparent;
-            border: 1px solid var(--light);
-            color: var(--light);
-            padding: 0.5rem 1rem;
-            cursor: pointer;
-            border-radius: 20px;
-            font-size: 0.9rem;
-            transition: 0.3s;
-        }
-        .refresh-btn:hover { background: var(--accent); border-color: var(--accent); color: var(--primary); }
-
-        /* --- PROGRAMS GRID & FILTERS --- */
-        .section { padding: 5rem 10%; }
-        .section-title { text-align: center; margin-bottom: 1rem; font-size: 2.5rem; }
-        .section-subtitle { text-align: center; margin-bottom: 3rem; color: #64748b; }
+        /* --- HOME: PROGRAMS GRID --- */
+        .section { padding: 4rem 10%; }
+        .section-title { text-align: center; margin-bottom: 3rem; font-size: 2.5rem; }
         
-        /* Filter Buttons */
-        .filter-container {
-            display: flex;
-            justify-content: center;
-            gap: 1rem;
-            margin-bottom: 3rem;
-            flex-wrap: wrap;
-        }
-        .filter-btn {
-            padding: 0.5rem 1.5rem;
-            border: none;
-            background: var(--soft-gray);
-            color: var(--dark-gray);
-            border-radius: 20px;
-            cursor: pointer;
-            font-weight: 600;
-            transition: 0.3s;
-        }
-        .filter-btn.active, .filter-btn:hover {
-            background: var(--primary);
-            color: white;
-        }
-
         .programs-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -150,211 +101,235 @@
             box-shadow: 0 4px 6px rgba(0,0,0,0.1);
             border-top: 4px solid var(--accent);
             transition: all 0.3s ease;
+            cursor: pointer;
             position: relative;
-            overflow: hidden;
-            animation: fadeIn 0.5s ease-in-out;
         }
-        .program-card:hover { transform: translateY(-10px); box-shadow: 0 10px 20px rgba(0,0,0,0.15); }
-        .program-card h3 { margin-bottom: 0.5rem; display: flex; justify-content: space-between; }
-        .badge {
-            font-size: 0.8rem;
-            background: var(--soft-gray);
-            padding: 2px 8px;
-            border-radius: 4px;
-            color: var(--dark-gray);
-            font-family: sans-serif;
-            font-weight: normal;
-        }
-        .price { color: var(--accent); font-weight: bold; margin-top: 1rem; display: block; }
+        .program-card:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.15); }
+        .program-card h3 { margin-bottom: 0.5rem; color: var(--primary); }
+        .price { color: #16a34a; font-weight: bold; margin-top: 1rem; display: block; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px; }
+        .click-hint { font-size: 0.8rem; color: #94a3b8; margin-top: 5px; font-style: italic; }
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
+        /* --- COURSE VIEWER (Hidden by default) --- */
+        #course-viewer {
+            padding: 2rem 5%;
+            background: #fff;
+            min-height: 100vh;
         }
-
-        /* --- CONTACT/FOOTER --- */
-        footer { background: var(--primary); color: var(--light); padding: 4rem 10%; text-align: center; }
-        .form-container { max-width: 600px; margin: 0 auto 3rem auto; }
-        input, textarea, select {
-            width: 100%;
-            padding: 1rem;
-            margin-bottom: 1rem;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            font-family: inherit;
-        }
-        button[type="submit"] {
-            width: 100%;
-            padding: 1rem;
-            background: var(--accent);
-            border: none;
+        .back-btn {
+            display: inline-block;
+            margin-bottom: 2rem;
             color: var(--primary);
             font-weight: bold;
             cursor: pointer;
-            font-size: 1.1rem;
-            transition: 0.3s;
+            border-bottom: 2px solid var(--accent);
         }
-        button[type="submit"]:hover { background: white; }
+        .course-header { margin-bottom: 3rem; border-bottom: 1px solid #eee; padding-bottom: 2rem; }
+        .course-header h1 { font-size: 3rem; margin-bottom: 1rem; }
+        
+        /* Layout for Video + Board */
+        .learning-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            height: 600px;
+        }
+        
+        /* Video Wrapper */
+        .video-wrapper {
+            background: #000;
+            border-radius: 8px;
+            overflow: hidden;
+            position: relative;
+        }
+        .video-wrapper iframe { width: 100%; height: 100%; border: none; }
 
-        /* Responsive */
-        @media (max-width: 768px) {
-            header h1 { font-size: 2.5rem; }
-            .nav-links { display: none; } 
-            .programs-grid { grid-template-columns: 1fr; }
+        /* Board Wrapper */
+        .board-wrapper {
+            background: #f8f9fa;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+            display: flex;
+            flex-direction: column;
         }
+        .board-header {
+            padding: 1rem;
+            background: var(--primary);
+            color: white;
+            border-radius: 8px 8px 0 0;
+            font-weight: bold;
+        }
+        .board-embed { flex: 1; width: 100%; height: 100%; }
+
+        @media (max-width: 900px) {
+            .learning-container { grid-template-columns: 1fr; height: auto; }
+            .video-wrapper, .board-wrapper { height: 400px; }
+        }
+
     </style>
 </head>
 <body>
 
     <nav>
-        <div class="logo">Kaden Müller <span>Chess</span></div>
+        <div class="logo" onclick="goHome()">Kaden Müller <span>Chess</span></div>
         <div class="nav-links">
-            <a href="#programs">Programs</a>
-            <a href="#insight">Daily Insight</a>
-            <a href="#contact" class="cta-btn">Join Academy</a>
+            <a onclick="goHome()">Academy Home</a>
+            <a href="#contact" class="cta-btn">Register</a>
         </div>
     </nav>
 
-    <header>
-        <h1>Master Your Move</h1>
-        <p>Elite chess coaching for the next generation of Grandmasters. Combining classical theory with modern engine preparation.</p>
-        <a href="#programs" class="hero-btn">Explore Courses</a>
-    </header>
-
-    <section id="insight" class="insight-section">
-        <div class="insight-box">
-            <h3>♟️ Daily Grandmaster Insight</h3>
-            <br>
-            <span id="insight-text">"Loading insight..."</span>
-            <br><br>
-            <button class="refresh-btn" onclick="generateTip()">Get Another Tip</button>
-        </div>
-    </section>
-
-    <section id="programs" class="section">
-        <h2 class="section-title">Academy Curriculum</h2>
-        <p class="section-subtitle">Select a category to find your perfect path.</p>
+    <div id="home-view" class="view-section">
         
-        <div class="filter-container">
-            <button class="filter-btn active" onclick="filterCourses('all')">All Courses</button>
-            <button class="filter-btn" onclick="filterCourses('beginner')">Beginner</button>
-            <button class="filter-btn" onclick="filterCourses('intermediate')">Intermediate</button>
-            <button class="filter-btn" onclick="filterCourses('advanced')">Advanced</button>
+        <header>
+            <h1>Master Your Move</h1>
+            <p>Elite chess coaching. Now available online for everyone.</p>
+            <br>
+            <button class="hero-btn" onclick="document.getElementById('programs').scrollIntoView()">Start Learning Free</button>
+        </header>
+
+        <section id="programs" class="section">
+            <h2 class="section-title">Select a Course</h2>
+            <div class="programs-grid">
+                
+                <div class="program-card" onclick="openCourse('pawn')">
+                    <h3>♙ The Pawn Foundation</h3>
+                    <p>Absolute beginner guide. Movement, rules, and basic checkmates.</p>
+                    <div class="click-hint">Click to watch lesson</div>
+                    <span class="price">Free for Students</span>
+                </div>
+
+                <div class="program-card" onclick="openCourse('openings')">
+                    <h3>📖 The Opening Lab</h3>
+                    <p>Master the London System and the Caro-Kann defense.</p>
+                    <div class="click-hint">Click to watch lesson</div>
+                    <span class="price">Free for Students</span>
+                </div>
+
+                <div class="program-card" onclick="openCourse('tactics')">
+                    <h3>⚔️ Tactical Mastery</h3>
+                    <p>Pins, skewers, forks, and discovered attacks. Spot the win.</p>
+                    <div class="click-hint">Click to watch lesson</div>
+                    <span class="price">Free for Students</span>
+                </div>
+
+                <div class="program-card" onclick="openCourse('endgame')">
+                    <h3>♔ Endgame Expert</h3>
+                    <p>King & Pawn endings, Lucena position, and Rook techniques.</p>
+                    <div class="click-hint">Click to watch lesson</div>
+                    <span class="price">Free for Students</span>
+                </div>
+
+                <div class="program-card" onclick="openCourse('gm')">
+                    <h3>🏆 GM Analysis</h3>
+                    <p>Study the famous games of Tal, Fischer, and Kasparov.</p>
+                    <div class="click-hint">Click to watch lesson</div>
+                    <span class="price">Free for Students</span>
+                </div>
+
+                <div class="program-card" onclick="openCourse('blitz')">
+                    <h3>⚡ Speed Chess Secrets</h3>
+                    <p>How to think fast, flag opponents, and manage clock pressure.</p>
+                    <div class="click-hint">Click to watch lesson</div>
+                    <span class="price">Free for Students</span>
+                </div>
+
+            </div>
+        </section>
+
+        <footer id="contact" style="background:var(--primary); color:white; padding:4rem; text-align:center;">
+            <h2>Join the Academy</h2>
+            <p>Sign up to receive weekly puzzles and tournament invites.</p>
+        </footer>
+    </div>
+
+    <div id="course-viewer" class="view-section hidden">
+        <div class="back-btn" onclick="goHome()">← Back to Course List</div>
+        
+        <div class="course-header">
+            <h1 id="viewer-title">Course Title</h1>
+            <p id="viewer-desc">Course description goes here...</p>
         </div>
 
-        <div class="programs-grid" id="coursesGrid">
-            <div class="program-card" data-category="beginner">
-                <h3>The Pawn Foundation <span class="badge">Beginner</span></h3>
-                <p>Master the rules, piece movement, basic tactics (forks, pins), and opening principles.</p>
-                <span class="price">R... / month</span>
+        <div class="learning-container">
+            <div class="video-wrapper">
+                <iframe id="video-frame" src="" allowfullscreen></iframe>
             </div>
 
-            <div class="program-card" data-category="intermediate">
-                <h3>The Knight's Strategy <span class="badge">Intermediate</span></h3>
-                <p>Deep dive into positional play, middle-game planning, and complex tactical patterns.</p>
-                <span class="price">R... / month</span>
-            </div>
-
-            <div class="program-card" data-category="advanced">
-                <h3>The King's Mastery <span class="badge">Advanced</span></h3>
-                <p>Tournament preparation, GM repertoire building, psychological resilience, and calculation.</p>
-                <span class="price">R... / month</span>
-            </div>
-
-            <div class="program-card" data-category="intermediate">
-                <h3>The Opening Lab <span class="badge">Intermediate</span></h3>
-                <p>Stop memorizing and start understanding. Build a bulletproof repertoire (e.g., Caro-Kann, London).</p>
-                <span class="price">R... / month</span>
-            </div>
-
-            <div class="program-card" data-category="advanced">
-                <h3>Endgame Specialist <span class="badge">Advanced</span></h3>
-                <p>Rook & Pawn endings, Lucena/Philidor positions, and turning slight advantages into wins.</p>
-                <span class="price">R... / month</span>
-            </div>
-
-            <div class="program-card" data-category="beginner">
-                <h3>Junior Squad <span class="badge">Beginner</span></h3>
-                <p>A fun, group-based environment for kids under 12 to learn discipline and logic through chess.</p>
-                <span class="price">R... / month</span>
+            <div class="board-wrapper">
+                <div class="board-header">♟️ Interactive Board & PGN Explorer</div>
+                <iframe id="pgn-frame" class="board-embed" src="" frameborder="0"></iframe>
             </div>
         </div>
-    </section>
-
-    <footer id="contact">
-        <h2 style="color:white; margin-bottom: 2rem;">Enroll Today</h2>
-        <div class="form-container">
-            <form onsubmit="handleEnrollment(event)">
-                <input type="text" placeholder="Student Name" required>
-                <input type="email" placeholder="Email Address" required>
-                <select>
-                    <option value="" disabled selected>Select Program Interest</option>
-                    <option value="beginner">Beginner Foundation</option>
-                    <option value="intermediate">Intermediate / Strategy</option>
-                    <option value="advanced">Advanced / Tournament Prep</option>
-                </select>
-                <button type="submit">Request Enrollment Info</button>
-            </form>
-        </div>
-        <p>&copy; 2025 Kaden Müller Chess Academy.</p>
-    </footer>
+    </div>
 
     <script>
-        // 1. DAILY INSIGHT GENERATOR
-        const tips = [
-            "\"When you see a good move, wait—don't play it. Look for a better one.\" — Emanuel Lasker",
-            "\"Control the center, and you control the game.\"",
-            "\"In the endgame, the King becomes an attacking piece. Don't hide him!\"",
-            "\"Tactics flow from a superior position.\"",
-            "\"Always ask yourself: What is my opponent's threat?\"",
-            "\"Development is not just moving pieces; it's moving them to useful squares.\"",
-            "\"Pawn structure is the skeleton of your position.\""
-        ];
+        // --- DATABASE OF COURSES ---
+        // We use Lichess embeds for the board and YouTube for videos.
+        const courseData = {
+            'pawn': {
+                title: "The Pawn Foundation",
+                desc: "Learn how the pieces move and the golden rules of the opening.",
+                video: "https://www.youtube.com/embed/OCSbzArwB10", // Generic Chess Basics Video
+                pgn: "https://lichess.org/study/embed/9M1jN7G0/JjO1kR7K#0" // Lichess Study: Beginner
+            },
+            'openings': {
+                title: "The Opening Lab",
+                desc: "Study the London System. Solid, easy to learn, and effective.",
+                video: "https://www.youtube.com/embed/HiL5vO87fso", // London System Video
+                pgn: "https://lichess.org/study/embed/fD5C1kZ8/2jXJ1Z1K#0" // Lichess Study: London System
+            },
+            'tactics': {
+                title: "Tactical Mastery",
+                desc: "Train your eyes to spot the winning combinations.",
+                video: "https://www.youtube.com/embed/1JcM5a4g6gU", // Tactics Video
+                pgn: "https://lichess.org/study/embed/v9Z5k1k8/1jXJ1Z1K#0" // Lichess Study: Tactics
+            },
+            'endgame': {
+                title: "Endgame Expert",
+                desc: "If you can't checkmate, you can't win. Learn the King & Pawn essentials.",
+                video: "https://www.youtube.com/embed/mCj8d8M9g9g", // Endgame Video
+                pgn: "https://lichess.org/study/embed/A8jN9G50/3jXJ1Z1K#0" // Lichess Study: Endgames
+            },
+            'gm': {
+                title: "Grandmaster Analysis",
+                desc: "Analyzing the 'Immortal Game' - Anderssen vs. Kieseritzky.",
+                video: "https://www.youtube.com/embed/0d2L3f8g8g8", // Famous Game Video
+                pgn: "https://lichess.org/study/embed/bJ5N9G80/4jXJ1Z1K#0" // Lichess Study: Famous Games
+            },
+            'blitz': {
+                title: "Speed Chess Secrets",
+                desc: "Tips and tricks for 3-minute and 5-minute games.",
+                video: "https://www.youtube.com/embed/hJ7k5l4m3n2", // Blitz Video
+                pgn: "https://lichess.org/study/embed/cK9N2H40/5jXJ1Z1K#0" // Lichess Study: Blitz
+            }
+        };
 
-        function generateTip() {
-            const textElement = document.getElementById('insight-text');
-            const randomIndex = Math.floor(Math.random() * tips.length);
-            textElement.style.opacity = 0; // Fade out effect logic could go here
-            setTimeout(() => {
-                textElement.innerText = tips[randomIndex];
-                textElement.style.opacity = 1;
-            }, 200);
+        // --- FUNCTIONS ---
+
+        function openCourse(courseId) {
+            const data = courseData[courseId];
+            if(!data) return; // Safety check
+
+            // 1. Populate the Viewer with Data
+            document.getElementById('viewer-title').innerText = data.title;
+            document.getElementById('viewer-desc').innerText = data.desc;
+            document.getElementById('video-frame').src = data.video;
+            document.getElementById('pgn-frame').src = data.pgn;
+
+            // 2. Hide Home, Show Viewer
+            document.getElementById('home-view').classList.add('hidden');
+            document.getElementById('course-viewer').classList.remove('hidden');
+
+            // 3. Scroll to top
+            window.scrollTo(0,0);
         }
 
-        // Run once on load
-        window.onload = generateTip;
-
-        // 2. COURSE FILTERING LOGIC
-        function filterCourses(category) {
-            const cards = document.querySelectorAll('.program-card');
-            const buttons = document.querySelectorAll('.filter-btn');
-
-            // Update active button style
-            buttons.forEach(btn => {
-                btn.classList.remove('active');
-                if(btn.innerText.toLowerCase().includes(category) || (category === 'all' && btn.innerText.includes('All'))) {
-                    btn.classList.add('active');
-                }
-            });
-
-            // Show/Hide cards
-            cards.forEach(card => {
-                if (category === 'all') {
-                    card.style.display = 'block';
-                } else {
-                    if (card.getAttribute('data-category') === category) {
-                        card.style.display = 'block';
-                    } else {
-                        card.style.display = 'none';
-                    }
-                }
-            });
-        }
-
-        // 3. FORM SUBMISSION ALERT
-        function handleEnrollment(e) {
-            e.preventDefault();
-            alert("Thank you! Your enrollment request has been sent to Kaden Müller. We will contact you shortly.");
+        function goHome() {
+            // 1. Stop Video (reset src)
+            document.getElementById('video-frame').src = "";
+            
+            // 2. Hide Viewer, Show Home
+            document.getElementById('course-viewer').classList.add('hidden');
+            document.getElementById('home-view').classList.remove('hidden');
         }
     </script>
 
