@@ -36,7 +36,14 @@
         }
         .logo { font-size: 1.5rem; font-weight: bold; letter-spacing: 1px; cursor: pointer; }
         .logo span { color: white; }
-        .nav-links a { margin-left: 2rem; color: var(--light); font-weight: 500; cursor: pointer; }
+        
+        .nav-links a { 
+            margin-left: 2rem; 
+            color: var(--light); 
+            font-weight: 500; 
+            cursor: pointer; 
+            position: relative;
+        }
         .nav-links a:hover { color: var(--accent); }
         
         .cta-btn {
@@ -49,7 +56,6 @@
         .cta-btn:hover { background: white; }
 
         /* --- VIEWS MANAGEMENT --- */
-        /* This handles switching between the Home page and the Course Viewer */
         .view-section { display: block; animation: fadeIn 0.5s; }
         .hidden { display: none !important; }
 
@@ -86,7 +92,7 @@
         .hero-btn:hover { background: transparent; color: var(--accent); }
 
         /* --- HOME: PROGRAMS GRID --- */
-        .section { padding: 4rem 10%; }
+        .section { padding: 4rem 10%; scroll-margin-top: 80px; } /* Added scroll margin for sticky header */
         .section-title { text-align: center; margin-bottom: 3rem; font-size: 2.5rem; }
         
         .programs-grid {
@@ -163,6 +169,7 @@
         @media (max-width: 900px) {
             .learning-container { grid-template-columns: 1fr; height: auto; }
             .video-wrapper, .board-wrapper { height: 400px; }
+            .nav-links a { margin-left: 1rem; font-size: 0.9rem; }
         }
 
     </style>
@@ -173,6 +180,7 @@
         <div class="logo" onclick="goHome()">Kaden Müller <span>Chess</span></div>
         <div class="nav-links">
             <a onclick="goHome()">Academy Home</a>
+            <a onclick="goToPrograms()">Programs</a>
             <a href="#contact" class="cta-btn">Register</a>
         </div>
     </nav>
@@ -183,7 +191,7 @@
             <h1>Master Your Move</h1>
             <p>Elite chess coaching. Now available online for everyone.</p>
             <br>
-            <button class="hero-btn" onclick="document.getElementById('programs').scrollIntoView()">Start Learning Free</button>
+            <button class="hero-btn" onclick="goToPrograms()">Start Learning Free</button>
         </header>
 
         <section id="programs" class="section">
@@ -242,7 +250,7 @@
     </div>
 
     <div id="course-viewer" class="view-section hidden">
-        <div class="back-btn" onclick="goHome()">← Back to Course List</div>
+        <div class="back-btn" onclick="goToPrograms()">← Back to Programs</div>
         
         <div class="course-header">
             <h1 id="viewer-title">Course Title</h1>
@@ -263,43 +271,42 @@
 
     <script>
         // --- DATABASE OF COURSES ---
-        // We use Lichess embeds for the board and YouTube for videos.
         const courseData = {
             'pawn': {
                 title: "The Pawn Foundation",
                 desc: "Learn how the pieces move and the golden rules of the opening.",
-                video: "https://www.youtube.com/embed/OCSbzArwB10", // Generic Chess Basics Video
-                pgn: "https://lichess.org/study/embed/9M1jN7G0/JjO1kR7K#0" // Lichess Study: Beginner
+                video: "https://www.youtube.com/embed/OCSbzArwB10",
+                pgn: "https://lichess.org/study/embed/9M1jN7G0/JjO1kR7K#0"
             },
             'openings': {
                 title: "The Opening Lab",
                 desc: "Study the London System. Solid, easy to learn, and effective.",
-                video: "https://www.youtube.com/embed/HiL5vO87fso", // London System Video
-                pgn: "https://lichess.org/study/embed/fD5C1kZ8/2jXJ1Z1K#0" // Lichess Study: London System
+                video: "https://www.youtube.com/embed/HiL5vO87fso",
+                pgn: "https://lichess.org/study/embed/fD5C1kZ8/2jXJ1Z1K#0"
             },
             'tactics': {
                 title: "Tactical Mastery",
                 desc: "Train your eyes to spot the winning combinations.",
-                video: "https://www.youtube.com/embed/1JcM5a4g6gU", // Tactics Video
-                pgn: "https://lichess.org/study/embed/v9Z5k1k8/1jXJ1Z1K#0" // Lichess Study: Tactics
+                video: "https://www.youtube.com/embed/1JcM5a4g6gU",
+                pgn: "https://lichess.org/study/embed/v9Z5k1k8/1jXJ1Z1K#0"
             },
             'endgame': {
                 title: "Endgame Expert",
                 desc: "If you can't checkmate, you can't win. Learn the King & Pawn essentials.",
-                video: "https://www.youtube.com/embed/mCj8d8M9g9g", // Endgame Video
-                pgn: "https://lichess.org/study/embed/A8jN9G50/3jXJ1Z1K#0" // Lichess Study: Endgames
+                video: "https://www.youtube.com/embed/mCj8d8M9g9g",
+                pgn: "https://lichess.org/study/embed/A8jN9G50/3jXJ1Z1K#0"
             },
             'gm': {
                 title: "Grandmaster Analysis",
                 desc: "Analyzing the 'Immortal Game' - Anderssen vs. Kieseritzky.",
-                video: "https://www.youtube.com/embed/0d2L3f8g8g8", // Famous Game Video
-                pgn: "https://lichess.org/study/embed/bJ5N9G80/4jXJ1Z1K#0" // Lichess Study: Famous Games
+                video: "https://www.youtube.com/embed/0d2L3f8g8g8",
+                pgn: "https://lichess.org/study/embed/bJ5N9G80/4jXJ1Z1K#0"
             },
             'blitz': {
                 title: "Speed Chess Secrets",
                 desc: "Tips and tricks for 3-minute and 5-minute games.",
-                video: "https://www.youtube.com/embed/hJ7k5l4m3n2", // Blitz Video
-                pgn: "https://lichess.org/study/embed/cK9N2H40/5jXJ1Z1K#0" // Lichess Study: Blitz
+                video: "https://www.youtube.com/embed/hJ7k5l4m3n2",
+                pgn: "https://lichess.org/study/embed/cK9N2H40/5jXJ1Z1K#0"
             }
         };
 
@@ -307,29 +314,42 @@
 
         function openCourse(courseId) {
             const data = courseData[courseId];
-            if(!data) return; // Safety check
+            if(!data) return; 
 
-            // 1. Populate the Viewer with Data
             document.getElementById('viewer-title').innerText = data.title;
             document.getElementById('viewer-desc').innerText = data.desc;
             document.getElementById('video-frame').src = data.video;
             document.getElementById('pgn-frame').src = data.pgn;
 
-            // 2. Hide Home, Show Viewer
             document.getElementById('home-view').classList.add('hidden');
             document.getElementById('course-viewer').classList.remove('hidden');
 
-            // 3. Scroll to top
             window.scrollTo(0,0);
         }
 
         function goHome() {
-            // 1. Stop Video (reset src)
+            // Stop Video (reset src)
             document.getElementById('video-frame').src = "";
             
-            // 2. Hide Viewer, Show Home
+            // Hide Viewer, Show Home
             document.getElementById('course-viewer').classList.add('hidden');
             document.getElementById('home-view').classList.remove('hidden');
+            
+            // Scroll to top
+            window.scrollTo(0,0);
+        }
+
+        // NEW FUNCTION FOR THE PROGRAMS LINK
+        function goToPrograms() {
+            // Ensure we are on the home view first (in case we are in a course)
+            document.getElementById('video-frame').src = "";
+            document.getElementById('course-viewer').classList.add('hidden');
+            document.getElementById('home-view').classList.remove('hidden');
+
+            // Scroll down to the programs section
+            setTimeout(() => {
+                document.getElementById('programs').scrollIntoView({ behavior: 'smooth' });
+            }, 50);
         }
     </script>
 
