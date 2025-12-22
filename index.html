@@ -3,175 +3,52 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kaden Müller Chess Academy</title>
+    <title>Kaden Müller Chess Academy - Home</title>
     <style>
-        /* --- CSS VARIABLES & RESET --- */
+        /* --- SHARED STYLES --- */
         :root {
-            --primary: #0f172a; /* Deep Blue */
-            --accent: #d4af37;  /* Gold */
-            --light: #f8fafc;   /* Ivory */
+            --primary: #0f172a; 
+            --accent: #d4af37;  
+            --light: #f8fafc;   
             --dark-gray: #334155;
             --bg-gray: #f1f5f9;
         }
-
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        
-        html { scroll-behavior: smooth; } /* Enables smooth scrolling */
-        
-        body { 
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
-            line-height: 1.6; 
-            color: var(--dark-gray); 
-            background-color: var(--bg-gray); 
-        }
-
-        /* --- TYPOGRAPHY --- */
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.6; color: var(--dark-gray); background-color: var(--bg-gray); }
         h1, h2, h3 { font-family: 'Georgia', serif; color: var(--primary); }
         a { text-decoration: none; color: inherit; transition: 0.3s; cursor: pointer; }
-
-        /* --- NAVIGATION --- */
-        nav {
-            background: var(--primary);
-            color: var(--accent);
-            padding: 1rem 5%;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-        }
-        .logo { font-size: 1.5rem; font-weight: bold; letter-spacing: 1px; }
+        
+        /* NAV */
+        nav { background: var(--primary); color: var(--accent); padding: 1rem 5%; display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-size: 1.5rem; font-weight: bold; }
         .logo span { color: white; }
-        
-        .nav-links { display: flex; gap: 2rem; align-items: center; }
-        .nav-links a { 
-            color: var(--light); 
-            font-weight: 500; 
-            font-size: 0.95rem;
-        }
+        .nav-links { display: flex; gap: 2rem; }
+        .nav-links a { color: var(--light); font-weight: 500; }
         .nav-links a:hover { color: var(--accent); }
-        
-        .cta-btn {
-            background: var(--accent);
-            color: var(--primary) !important;
-            padding: 0.5rem 1.5rem;
-            border-radius: 4px;
-            font-weight: bold;
-        }
-        .cta-btn:hover { background: white; }
+        .cta-btn { background: var(--accent); color: var(--primary) !important; padding: 0.5rem 1.5rem; border-radius: 4px; font-weight: bold; }
 
-        /* --- SECTIONS COMMON STYLE --- */
-        section { padding: 5rem 10%; border-bottom: 1px solid #e2e8f0; }
-        .section-header { text-align: center; margin-bottom: 3rem; }
-        .section-header h2 { font-size: 2.5rem; margin-bottom: 0.5rem; }
-        .section-header p { color: #64748b; font-size: 1.1rem; }
-
-        /* --- HERO SECTION --- */
+        /* HERO */
         header {
             background: linear-gradient(rgba(15, 23, 42, 0.9), rgba(15, 23, 42, 0.8)), url('https://images.unsplash.com/photo-1529699211952-734e80c4d42b?ixlib=rb-1.2.1&auto=format&fit=crop&w=1351&q=80');
-            background-size: cover;
-            background-position: center;
-            height: 90vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            color: var(--light);
+            background-size: cover; background-position: center; height: 90vh;
+            display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; color: var(--light);
         }
-        header h1 { color: var(--light); font-size: 3.5rem; margin-bottom: 1rem; text-shadow: 2px 2px 4px rgba(0,0,0,0.5); }
-        .hero-btn {
-            background: var(--accent);
-            color: var(--primary);
-            padding: 1rem 2.5rem;
-            font-size: 1.1rem;
-            border-radius: 5px;
-            font-weight: bold;
-            border: none;
-            cursor: pointer;
-            margin-top: 2rem;
-        }
+        header h1 { font-size: 3.5rem; margin-bottom: 1rem; }
+        .hero-btn { background: var(--accent); color: var(--primary); padding: 1rem 2.5rem; font-size: 1.1rem; border-radius: 5px; font-weight: bold; border: none; cursor: pointer; margin-top: 2rem; }
         .hero-btn:hover { transform: scale(1.05); }
 
-        /* --- PROGRAMS GRID --- */
-        .programs-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-        }
-        .program-card {
-            background: white;
-            padding: 2rem;
-            border-radius: 12px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-            border-top: 4px solid var(--accent);
-            cursor: pointer;
-            transition: transform 0.3s ease;
-        }
-        .program-card:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
-        .program-card h3 { margin-bottom: 0.5rem; display: flex; justify-content: space-between; color: var(--primary); }
-        .card-icon { font-size: 1.5rem; }
-        .price-tag { color: #16a34a; font-weight: bold; font-size: 0.9rem; margin-top: 1rem; display: block; text-transform: uppercase; letter-spacing: 1px; }
-
-        /* --- TABLES (Leaderboard & Tournaments) --- */
-        .styled-table {
-            width: 100%;
-            border-collapse: collapse;
-            background: white;
-            border-radius: 10px;
-            overflow: hidden;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-        }
-        .styled-table thead tr {
-            background-color: var(--primary);
-            color: #ffffff;
-            text-align: left;
-        }
+        /* SECTIONS */
+        section { padding: 5rem 10%; border-bottom: 1px solid #e2e8f0; }
+        .section-header { text-align: center; margin-bottom: 3rem; }
+        
+        /* TABLES */
+        .styled-table { width: 100%; border-collapse: collapse; background: white; border-radius: 10px; overflow: hidden; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
+        .styled-table thead tr { background-color: var(--primary); color: white; text-align: left; }
         .styled-table th, .styled-table td { padding: 15px 20px; }
-        .styled-table tbody tr { border-bottom: 1px solid #dddddd; }
-        .styled-table tbody tr:nth-of-type(even) { background-color: #f3f3f3; }
-        .styled-table tbody tr:last-of-type { border-bottom: 2px solid var(--primary); }
-        .rank-change.up { color: green; font-weight: bold; }
-        .rank-change.down { color: red; font-weight: bold; }
-        .join-btn {
-            padding: 6px 12px;
-            background: var(--primary);
-            color: white;
-            border-radius: 4px;
-            font-size: 0.8rem;
-        }
-
-        /* --- COURSE VIEWER (Hidden Overlay) --- */
-        #course-viewer {
-            display: none; /* Hidden by default */
-            padding: 2rem 5%;
-            background: #fff;
-            min-height: 100vh;
-        }
-        .back-nav { margin-bottom: 2rem; display: flex; align-items: center; gap: 10px; color: var(--primary); font-weight: bold; cursor: pointer; font-size: 1.2rem; }
-        .back-nav:hover { color: var(--accent); }
-
-        .learning-container {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 2rem;
-            height: 600px;
-        }
-        .video-wrapper { background: #000; border-radius: 8px; overflow: hidden; }
-        .video-wrapper iframe { width: 100%; height: 100%; border: none; }
-        .board-wrapper { background: #f8f9fa; border-radius: 8px; border: 1px solid #ddd; }
-        .board-embed { width: 100%; height: 100%; border:none; }
-
-        /* --- FOOTER --- */
+        .styled-table tbody tr { border-bottom: 1px solid #ddd; }
+        .join-btn { padding: 6px 12px; background: var(--primary); color: white; border-radius: 4px; font-size: 0.8rem; }
+        
         footer { background: var(--primary); color: var(--light); padding: 4rem 10%; text-align: center; }
-
-        @media (max-width: 900px) {
-            .learning-container { grid-template-columns: 1fr; height: auto; }
-            .video-wrapper, .board-wrapper { height: 400px; }
-            .nav-links { display: none; } 
-        }
     </style>
 </head>
 <body>
@@ -179,229 +56,62 @@
     <nav>
         <div class="logo">Kaden Müller <span>Chess</span></div>
         <div class="nav-links">
-            <a href="#home">Home</a>
-            <a href="#programs">Programs</a>
+            <a href="index.html" style="color:var(--accent)">Home</a>
+            <a href="programs.html">Programs</a> 
             <a href="#tournaments">Tournaments</a>
             <a href="#leaderboard">Leaderboard</a>
             <a href="#contact" class="cta-btn">Join Now</a>
         </div>
     </nav>
 
-    <main id="main-content">
-        
-        <header id="home">
-            <h1>Master Your Move</h1>
-            <p>The premier academy for strategy, tactics, and mental discipline.</p>
-            <button class="hero-btn" onclick="document.getElementById('programs').scrollIntoView()">Start Learning Free</button>
-        </header>
+    <header>
+        <h1>Master Your Move</h1>
+        <p>The premier academy for strategy, tactics, and mental discipline.</p>
+        <a href="programs.html"><button class="hero-btn">Start Learning Free</button></a>
+    </header>
 
-        <section id="programs">
-            <div class="section-header">
-                <h2>Academy Curriculum</h2>
-                <p>Select a free course to begin your journey.</p>
-            </div>
-            <div class="programs-grid">
-                <div class="program-card" onclick="openCourse('pawn')">
-                    <h3>The Pawn Foundation <span class="card-icon">♙</span></h3>
-                    <p>Absolute beginner guide. Movement, rules, and basic checkmates.</p>
-                    <span class="price-tag">Free Access</span>
-                </div>
-                <div class="program-card" onclick="openCourse('openings')">
-                    <h3>The Opening Lab <span class="card-icon">📖</span></h3>
-                    <p>Master the London System and the Caro-Kann defense.</p>
-                    <span class="price-tag">Free Access</span>
-                </div>
-                <div class="program-card" onclick="openCourse('tactics')">
-                    <h3>Tactical Mastery <span class="card-icon">⚔️</span></h3>
-                    <p>Pins, skewers, forks, and discovered attacks. Spot the win.</p>
-                    <span class="price-tag">Free Access</span>
-                </div>
-                <div class="program-card" onclick="openCourse('endgame')">
-                    <h3>Endgame Expert <span class="card-icon">♔</span></h3>
-                    <p>King & Pawn endings, Lucena position, and Rook techniques.</p>
-                    <span class="price-tag">Free Access</span>
-                </div>
-                <div class="program-card" onclick="openCourse('blitz')">
-                    <h3>Speed Chess Secrets <span class="card-icon">⚡</span></h3>
-                    <p>How to think fast, flag opponents, and manage clock pressure.</p>
-                    <span class="price-tag">Free Access</span>
-                </div>
-            </div>
-        </section>
-
-        <section id="tournaments">
-            <div class="section-header">
-                <h2>Upcoming Tournaments</h2>
-                <p>Register for our weekly rated events.</p>
-            </div>
-            <table class="styled-table">
-                <thead>
-                    <tr>
-                        <th>Date</th>
-                        <th>Event</th>
-                        <th>Format</th>
-                        <th>Status</th>
-                        <th>Register</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>Fri, 25 Oct</td>
-                        <td><strong>Friday Night Blitz</strong></td>
-                        <td>3+2 Blitz</td>
-                        <td><span style="color:green">Open</span></td>
-                        <td><a href="#" class="join-btn">Join</a></td>
-                    </tr>
-                    <tr>
-                        <td>Sat, 26 Oct</td>
-                        <td><strong>U16 Championship</strong></td>
-                        <td>15+10 Rapid</td>
-                        <td><span style="color:orange">Filling</span></td>
-                        <td><a href="#" class="join-btn">Join</a></td>
-                    </tr>
-                    <tr>
-                        <td>Sun, 27 Oct</td>
-                        <td><strong>Academy Shield</strong></td>
-                        <td>10+0 Rapid</td>
-                        <td><span style="color:green">Open</span></td>
-                        <td><a href="#" class="join-btn">Join</a></td>
-                    </tr>
-                </tbody>
-            </table>
-        </section>
-
-        <section id="leaderboard">
-            <div class="section-header">
-                <h2>Top Players</h2>
-                <p>Current Academy ELO Rankings.</p>
-            </div>
-            <table class="styled-table">
-                <thead>
-                    <tr>
-                        <th>Rank</th>
-                        <th>Player Name</th>
-                        <th>Rating</th>
-                        <th>Trend</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>#1</td>
-                        <td><strong>Kaden Müller</strong></td>
-                        <td>2450</td>
-                        <td>-</td>
-                    </tr>
-                    <tr>
-                        <td>#2</td>
-                        <td>Sarah Jenkins</td>
-                        <td>2105</td>
-                        <td><span class="rank-change up">▲ 12</span></td>
-                    </tr>
-                    <tr>
-                        <td>#3</td>
-                        <td>David Ross</td>
-                        <td>2089</td>
-                        <td><span class="rank-change down">▼ 5</span></td>
-                    </tr>
-                    <tr>
-                        <td>#4</td>
-                        <td>Michael Chen</td>
-                        <td>1950</td>
-                        <td><span class="rank-change up">▲ 25</span></td>
-                    </tr>
-                </tbody>
-            </table>
-        </section>
-
-        <footer id="contact">
-            <h2>Join the Academy</h2>
-            <p>Ready to make your move? Contact us for private coaching.</p>
-            <br>
-            <p>&copy; 2025 Kaden Müller Chess Academy</p>
-        </footer>
-
-    </main> <div id="course-viewer">
-        <div class="back-nav" onclick="closeCourse()">
-            <span>← Return to Main Page</span>
+    <section id="tournaments">
+        <div class="section-header">
+            <h2>Upcoming Tournaments</h2>
+            <p>Register for our weekly rated events.</p>
         </div>
-        
-        <div style="margin-bottom: 2rem;">
-            <h1 id="viewer-title">Course Title</h1>
-            <p id="viewer-desc">Description...</p>
+        <table class="styled-table">
+            <thead>
+                <tr>
+                    <th>Date</th><th>Event</th><th>Format</th><th>Status</th><th>Register</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td>Fri, 25 Oct</td><td><strong>Friday Night Blitz</strong></td><td>3+2 Blitz</td><td><span style="color:green">Open</span></td><td><a href="#" class="join-btn">Join</a></td></tr>
+                <tr><td>Sat, 26 Oct</td><td><strong>U16 Championship</strong></td><td>15+10 Rapid</td><td><span style="color:orange">Filling</span></td><td><a href="#" class="join-btn">Join</a></td></tr>
+                <tr><td>Sun, 27 Oct</td><td><strong>Academy Shield</strong></td><td>10+0 Rapid</td><td><span style="color:green">Open</span></td><td><a href="#" class="join-btn">Join</a></td></tr>
+            </tbody>
+        </table>
+    </section>
+
+    <section id="leaderboard">
+        <div class="section-header">
+            <h2>Top Players</h2>
+            <p>Current Academy ELO Rankings.</p>
         </div>
+        <table class="styled-table">
+            <thead>
+                <tr><th>Rank</th><th>Player Name</th><th>Rating</th><th>Trend</th></tr>
+            </thead>
+            <tbody>
+                <tr><td>#1</td><td><strong>Kaden Müller</strong></td><td>2450</td><td>-</td></tr>
+                <tr><td>#2</td><td>Sarah Jenkins</td><td>2105</td><td><span style="color:green">▲ 12</span></td></tr>
+                <tr><td>#3</td><td>David Ross</td><td>2089</td><td><span style="color:red">▼ 5</span></td></tr>
+            </tbody>
+        </table>
+    </section>
 
-        <div class="learning-container">
-            <div class="video-wrapper">
-                <iframe id="video-frame" src="" allowfullscreen></iframe>
-            </div>
-            <div class="board-wrapper">
-                <iframe id="pgn-frame" class="board-embed" src="" frameborder="0"></iframe>
-            </div>
-        </div>
-    </div>
-
-    <script>
-        // --- COURSE DATA ---
-        const courseData = {
-            'pawn': {
-                title: "The Pawn Foundation",
-                desc: "Learn how the pieces move and the golden rules of the opening.",
-                video: "https://www.youtube.com/embed/OCSbzArwB10",
-                pgn: "https://lichess.org/study/embed/9M1jN7G0/JjO1kR7K#0"
-            },
-            'openings': {
-                title: "The Opening Lab",
-                desc: "Study the London System. Solid, easy to learn, and effective.",
-                video: "https://www.youtube.com/embed/HiL5vO87fso",
-                pgn: "https://lichess.org/study/embed/fD5C1kZ8/2jXJ1Z1K#0"
-            },
-            'tactics': {
-                title: "Tactical Mastery",
-                desc: "Train your eyes to spot the winning combinations.",
-                video: "https://www.youtube.com/embed/1JcM5a4g6gU",
-                pgn: "https://lichess.org/study/embed/v9Z5k1k8/1jXJ1Z1K#0"
-            },
-            'endgame': {
-                title: "Endgame Expert",
-                desc: "If you can't checkmate, you can't win. Learn the King & Pawn essentials.",
-                video: "https://www.youtube.com/embed/mCj8d8M9g9g",
-                pgn: "https://lichess.org/study/embed/A8jN9G50/3jXJ1Z1K#0"
-            },
-            'blitz': {
-                title: "Speed Chess Secrets",
-                desc: "Tips and tricks for 3-minute and 5-minute games.",
-                video: "https://www.youtube.com/embed/hJ7k5l4m3n2",
-                pgn: "https://lichess.org/study/embed/cK9N2H40/5jXJ1Z1K#0"
-            }
-        };
-
-        // OPEN THE VIEWER (Hide Main Page)
-        function openCourse(courseId) {
-            const data = courseData[courseId];
-            if(!data) return;
-
-            // Load Data
-            document.getElementById('viewer-title').innerText = data.title;
-            document.getElementById('viewer-desc').innerText = data.desc;
-            document.getElementById('video-frame').src = data.video;
-            document.getElementById('pgn-frame').src = data.pgn;
-
-            // Switch Views
-            document.getElementById('main-content').style.display = 'none';
-            document.getElementById('course-viewer').style.display = 'block';
-            window.scrollTo(0,0);
-        }
-
-        // CLOSE THE VIEWER (Show Main Page)
-        function closeCourse() {
-            // Clear Video (Stop playing)
-            document.getElementById('video-frame').src = "";
-
-            // Switch Views
-            document.getElementById('course-viewer').style.display = 'none';
-            document.getElementById('main-content').style.display = 'block';
-        }
-    </script>
+    <footer id="contact">
+        <h2>Join the Academy</h2>
+        <p>Ready to make your move? Contact us for private coaching.</p>
+        <br>
+        <p>&copy; 2025 Kaden Müller Chess Academy</p>
+    </footer>
 
 </body>
 </html>
