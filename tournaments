@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tournaments - Kaden Müller Chess Academy</title>
+    <script>
+        if (!localStorage.getItem('chessStudent')) window.location.href = 'index.html';
+    </script>
+    <style>
+        :root { --primary: #0f172a; --accent: #d4af37; --bg: #f1f5f9; }
+        body { font-family: 'Segoe UI', sans-serif; background: var(--bg); margin: 0; color: #334155; }
+
+        nav { background: var(--primary); padding: 1rem 5%; display: flex; justify-content: space-between; align-items: center; }
+        .logo a { font-size: 1.5rem; font-weight: bold; color: var(--accent); text-decoration: none; }
+        .logo span { color: white; }
+        .nav-links a { color: #f8fafc; margin-left: 2rem; text-decoration: none; font-weight: 500; }
+        .nav-links a:hover { color: var(--accent); }
+        .active { color: var(--accent) !important; }
+
+        .container { max-width: 1000px; margin: 4rem auto; padding: 0 20px; }
+        h1 { text-align: center; color: var(--primary); font-family: 'Georgia', serif; margin-bottom: 1rem; }
+        p { text-align: center; color: #64748b; margin-bottom: 3rem; }
+
+        table { width: 100%; border-collapse: collapse; background: white; box-shadow: 0 5px 15px rgba(0,0,0,0.1); border-radius: 8px; overflow: hidden; }
+        thead { background: var(--primary); color: white; }
+        th, td { padding: 1rem; text-align: left; }
+        tr { border-bottom: 1px solid #eee; }
+        
+        .status-open { color: green; font-weight: bold; background: #dcfce7; padding: 4px 8px; border-radius: 4px; font-size: 0.8rem; }
+        .status-full { color: #b45309; font-weight: bold; background: #fef3c7; padding: 4px 8px; border-radius: 4px; font-size: 0.8rem; }
+        
+        .join-btn { background: var(--primary); color: white; padding: 0.5rem 1rem; border: none; border-radius: 4px; cursor: pointer; }
+        .join-btn:hover { background: var(--accent); color: var(--primary); font-weight: bold; }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="logo"><a href="index.html">Kaden Müller <span>Chess</span></a></div>
+        <div class="nav-links">
+            <a href="index.html">Home</a>
+            <a href="programs.html">Programs</a>
+            <a href="tournaments.html" class="active">Tournaments</a>
+            <a href="leaderboard.html">Leaderboard</a>
+        </div>
+    </nav>
+
+    <div class="container">
+        <h1>Tournament Schedule</h1>
+        <p>Official rated events for Academy members.</p>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Event Name</th>
+                    <th>Format</th>
+                    <th>Status</th>
+                    <th>Register</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Fri, 25 Oct</td>
+                    <td><strong>Friday Night Blitz (FNB)</strong></td>
+                    <td>3+2 Blitz</td>
+                    <td><span class="status-open">Registration Open</span></td>
+                    <td><button class="join-btn" onclick="alert('Registered!')">Join</button></td>
+                </tr>
+                <tr>
+                    <td>Sat, 26 Oct</td>
+                    <td><strong>Rapid Cup</strong></td>
+                    <td>15+10 Rapid</td>
+                    <td><span class="status-full">Filling Fast</span></td>
+                    <td><button class="join-btn" onclick="alert('Registered!')">Join</button></td>
+                </tr>
+                <tr>
+                    <td>Sun, 27 Oct</td>
+                    <td><strong>Academy Monthly Shield</strong></td>
+                    <td>10+0 Rapid</td>
+                    <td><span class="status-open">Registration Open</span></td>
+                    <td><button class="join-btn" onclick="alert('Registered!')">Join</button></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>
