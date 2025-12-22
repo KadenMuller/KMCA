@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Programs - Kaden Müller Chess Academy</title>
+    
+    <script>
+        // If no user is found in storage, kick them back to index.html
+        if (!localStorage.getItem('chessStudent')) {
+            alert("Access Denied: You must sign up to view course materials.");
+            window.location.href = 'index.html';
+        }
+    </script>
+
+    <style>
+        /* --- SHARED STYLES --- */
+        :root {
+            --primary: #0f172a; 
+            --accent: #d4af37;  
+            --light: #f8fafc;   
+            --dark-gray: #334155;
+            --bg-gray: #f1f5f9;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.6; color: var(--dark-gray); background-color: var(--bg-gray); }
+        h1, h2, h3 { font-family: 'Georgia', serif; color: var(--primary); }
+        a { text-decoration: none; color: inherit; transition: 0.3s; cursor: pointer; }
+        
+        /* NAV */
+        nav { background: var(--primary); color: var(--accent); padding: 1rem 5%; display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-size: 1.5rem; font-weight: bold; }
+        .logo span { color: white; }
+        .nav-links { display: flex; gap: 2rem; align-items: center; }
+        .nav-links a { color: var(--light); font-weight: 500; }
+        .nav-links a:hover { color: var(--accent); }
+        .logout-btn { background: #ef4444; color: white; padding: 0.5rem 1rem; border-radius: 4px; font-size: 0.9rem; }
+
+        /* PROGRAMS GRID */
+        .container { max-width: 1200px; margin: 0 auto; padding: 4rem 20px; }
+        .page-header { text-align: center; margin-bottom: 3rem; }
+        
+        .programs-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; }
+        .program-card {
+            background: white; padding: 2rem; border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05); border-top: 4px solid var(--accent);
+            cursor: pointer; transition: transform 0.3s ease;
+        }
+        .program-card:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
+        .price-tag { color: #16a34a; font-weight: bold; font-size: 0.9rem; margin-top: 1rem; display: block; text-transform: uppercase; }
+
+        /* VIEWER OVERLAY */
+        #course-viewer { display: none; padding-top: 2rem; min-height: 80vh; }
+        .back-nav { margin-bottom: 2rem; display: flex; align-items: center; gap: 10px; color: var(--primary); font-weight: bold; cursor: pointer; font-size: 1.2rem; }
+        
+        .learning-container { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; height: 600px; }
+        .video-wrapper { background: #000; border-radius: 8px; overflow: hidden; }
+        .video-wrapper iframe { width: 100%; height: 100%; border: none; }
+        .board-wrapper { background: #f8f9fa; border-radius: 8px; border: 1px solid #ddd; }
+        .board-embed { width: 100%; height: 100%; border:none; }
+
+        footer { background: var(--primary); color: var(--light); padding: 4rem 10%; text-align: center; margin-top: 4rem;}
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div class="logo"><a href="index.html">Kaden Müller <span>Chess</span></a></div>
+        <div class="nav-links">
+            <a href="index.html">Home</a>
+            <a href="programs.html" style="color:var(--accent)">Programs</a>
+            <span id="user-display" style="color:white; opacity:0.7;"></span>
+            <button class="logout-btn" onclick="handleLogout()">Log Out</button>
+        </div>
+    </nav>
+
+    <div class="container">
+        
+        <div id="main-grid">
+            <div class="page-header">
+                <h1>Student Portal</h1>
+                <p>Select a module to begin.</p>
+            </div>
+            
+            <div class="programs-grid">
+                <div class="program-card" onclick="openCourse('pawn')">
+                    <h3>The Pawn Foundation</h3>
+                    <p>Absolute beginner guide. Movement, rules, and basic checkmates.</p>
+                    <span class="price-tag">Start Lesson</span>
+                </div>
+                <div class="program-card" onclick="openCourse('openings')">
+                    <h3>The Opening Lab</h3>
+                    <p>Master the London System and the Caro-Kann defense.</p>
+                    <span class="price-tag">Start Lesson</span>
+                </div>
+                <div class="program-card" onclick="openCourse('tactics')">
+                    <h3>Tactical Mastery</h3>
+                    <p>Pins, skewers, forks, and discovered attacks.</p>
+                    <span class="price-tag">Start Lesson</span>
+                </div>
+                <div class="program-card" onclick="openCourse('endgame')">
+                    <h3>Endgame Expert</h3>
+                    <p>King & Pawn endings, Lucena position, and Rook techniques.</p>
+                    <span class="price-tag">Start Lesson</span>
+                </div>
+                <div class="program-card" onclick="openCourse('blitz')">
+                    <h3>Speed Chess Secrets</h3>
+                    <p>How to think fast, flag opponents, and manage clock.</p>
+                    <span class="price-tag">Start Lesson</span>
+                </div>
+            </div>
+        </div>
+
+        <div id="course-viewer">
+            <div class="back-nav" onclick="closeCourse()">
+                <span>← Back to Dashboard</span>
+            </div>
+            
+            <div style="margin-bottom: 2rem;">
+                <h1 id="viewer-title">Course Title</h1>
+                <p id="viewer-desc">Description...</p>
+            </div>
+
+            <div class="learning-container">
+                <div class="video-wrapper">
+                    <iframe id="video-frame" src="" allowfullscreen></iframe>
+                </div>
+                <div class="board-wrapper">
+                    <iframe id="pgn-frame" class="board-embed" src="" frameborder="0"></iframe>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <footer>
+        <p>&copy; 2025 Kaden Müller Chess Academy</p>
+    </footer>
+
+    <script>
+        // Display User Name
+        document.getElementById('user-display').innerText = localStorage.getItem('chessStudent');
+
+        function handleLogout() {
+            localStorage.removeItem('chessStudent');
+            window.location.href = 'index.html';
+        }
+
+        const courseData = {
+            'pawn': {
+                title: "The Pawn Foundation",
+                desc: "Learn how the pieces move and the golden rules of the opening.",
+                video: "https://www.youtube.com/embed/OCSbzArwB10",
+                pgn: "https://lichess.org/study/embed/9M1jN7G0/JjO1kR7K#0"
+            },
+            'openings': {
+                title: "The Opening Lab",
+                desc: "Study the London System. Solid, easy to learn, and effective.",
+                video: "https://www.youtube.com/embed/HiL5vO87fso",
+                pgn: "https://lichess.org/study/embed/fD5C1kZ8/2jXJ1Z1K#0"
+            },
+            'tactics': {
+                title: "Tactical Mastery",
+                desc: "Train your eyes to spot the winning combinations.",
+                video: "https://www.youtube.com/embed/1JcM5a4g6gU",
+                pgn: "https://lichess.org/study/embed/v9Z5k1k8/1jXJ1Z1K#0"
+            },
+            'endgame': {
+                title: "Endgame Expert",
+                desc: "If you can't checkmate, you can't win. Learn the King & Pawn essentials.",
+                video: "https://www.youtube.com/embed/mCj8d8M9g9g",
+                pgn: "https://lichess.org/study/embed/A8jN9G50/3jXJ1Z1K#0"
+            },
+            'blitz': {
+                title: "Speed Chess Secrets",
+                desc: "Tips and tricks for 3-minute and 5-minute games.",
+                video: "https://www.youtube.com/embed/hJ7k5l4m3n2",
+                pgn: "https://lichess.org/study/embed/cK9N2H40/5jXJ1Z1K#0"
+            }
+        };
+
+        function openCourse(courseId) {
+            const data = courseData[courseId];
+            if(!data) return;
+
+            document.getElementById('viewer-title').innerText = data.title;
+            document.getElementById('viewer-desc').innerText = data.desc;
+            document.getElementById('video-frame').src = data.video;
+            document.getElementById('pgn-frame').src = data.pgn;
+
+            document.getElementById('main-grid').style.display = 'none';
+            document.getElementById('course-viewer').style.display = 'block';
+            window.scrollTo(0,0);
+        }
+
+        function closeCourse() {
+            document.getElementById('video-frame').src = "";
+            document.getElementById('course-viewer').style.display = 'none';
+            document.getElementById('main-grid').style.display = 'block';
+        }
+    </script>
+</body>
+</html>
