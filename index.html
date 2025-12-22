@@ -15,11 +15,11 @@
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.6; color: var(--dark-gray); background-color: #f1f5f9; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.6; color: var(--dark-gray); background-color: #f8fafc; }
 
         /* --- TYPOGRAPHY --- */
         h1, h2, h3 { font-family: 'Georgia', serif; color: var(--primary); }
-        a { text-decoration: none; color: inherit; transition: 0.3s; }
+        a { text-decoration: none; color: inherit; transition: 0.3s; cursor: pointer; }
 
         /* --- NAVIGATION --- */
         nav {
@@ -32,41 +32,41 @@
             position: sticky;
             top: 0;
             z-index: 1000;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
         }
-        .logo { font-size: 1.5rem; font-weight: bold; letter-spacing: 1px; cursor: pointer; }
+        .logo { font-size: 1.5rem; font-weight: bold; letter-spacing: 1px; }
         .logo span { color: white; }
         
+        .nav-links { display: flex; gap: 2rem; align-items: center; }
         .nav-links a { 
-            margin-left: 2rem; 
             color: var(--light); 
             font-weight: 500; 
-            cursor: pointer; 
+            font-size: 0.95rem;
             position: relative;
         }
-        .nav-links a:hover { color: var(--accent); }
+        .nav-links a:hover, .nav-links a.active { color: var(--accent); }
         
         .cta-btn {
             background: var(--accent);
-            color: var(--primary);
+            color: var(--primary) !important;
             padding: 0.5rem 1.5rem;
             border-radius: 4px;
             font-weight: bold;
         }
         .cta-btn:hover { background: white; }
 
-        /* --- VIEWS MANAGEMENT --- */
-        .view-section { display: block; animation: fadeIn 0.5s; }
-        .hidden { display: none !important; }
+        /* --- VIEW MANAGEMENT (SPA LOGIC) --- */
+        .page-view { display: none; padding-top: 2rem; animation: fadeIn 0.4s; min-height: 80vh; }
+        .page-view.active { display: block; }
 
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* --- HOME: HERO SECTION --- */
-        header {
-            background: linear-gradient(rgba(15, 23, 42, 0.9), rgba(15, 23, 42, 0.8)), url('https://images.unsplash.com/photo-1529699211952-734e80c4d42b?ixlib=rb-1.2.1&auto=format&fit=crop&w=1351&q=80');
+        /* --- HOME HERO --- */
+        .hero {
+            background: linear-gradient(rgba(15, 23, 42, 0.9), rgba(15, 23, 42, 0.8)), url('https://images.unsplash.com/photo-1580541832248-2538be689e67?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
             background-size: cover;
             background-position: center;
             height: 80vh;
@@ -76,9 +76,10 @@
             align-items: center;
             text-align: center;
             color: var(--light);
-            padding: 0 20px;
+            margin-top: -2rem; /* Pull up to hide white space */
+            border-radius: 0 0 50px 50px;
         }
-        header h1 { color: var(--light); font-size: 3.5rem; margin-bottom: 1rem; text-shadow: 2px 2px 4px rgba(0,0,0,0.5); }
+        .hero h1 { color: var(--light); font-size: 3.5rem; margin-bottom: 1rem; }
         .hero-btn {
             background: var(--accent);
             color: var(--primary);
@@ -86,193 +87,334 @@
             font-size: 1.1rem;
             border-radius: 5px;
             font-weight: bold;
-            border: 2px solid var(--accent);
+            border: none;
             cursor: pointer;
+            margin-top: 2rem;
         }
-        .hero-btn:hover { background: transparent; color: var(--accent); }
+        .hero-btn:hover { transform: scale(1.05); }
 
-        /* --- HOME: PROGRAMS GRID --- */
-        .section { padding: 4rem 10%; scroll-margin-top: 80px; } /* Added scroll margin for sticky header */
-        .section-title { text-align: center; margin-bottom: 3rem; font-size: 2.5rem; }
-        
+        /* --- GENERIC PAGE STYLES --- */
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+        .page-header { text-align: center; margin-bottom: 3rem; }
+        .page-header h1 { font-size: 3rem; }
+        .page-header p { color: #64748b; font-size: 1.2rem; }
+
+        /* --- PROGRAMS GRID --- */
         .programs-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 2rem;
+            padding-bottom: 4rem;
         }
         .program-card {
             background: white;
             padding: 2rem;
-            border-radius: 8px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
             border-top: 4px solid var(--accent);
-            transition: all 0.3s ease;
             cursor: pointer;
-            position: relative;
+            transition: transform 0.3s ease;
         }
-        .program-card:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.15); }
-        .program-card h3 { margin-bottom: 0.5rem; color: var(--primary); }
-        .price { color: #16a34a; font-weight: bold; margin-top: 1rem; display: block; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px; }
-        .click-hint { font-size: 0.8rem; color: #94a3b8; margin-top: 5px; font-style: italic; }
+        .program-card:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
+        .program-card h3 { margin-bottom: 0.5rem; display: flex; justify-content: space-between; }
+        .card-icon { font-size: 1.5rem; }
+        .price-tag { color: #16a34a; font-weight: bold; font-size: 0.9rem; margin-top: 1rem; display: block; }
 
-        /* --- COURSE VIEWER (Hidden by default) --- */
-        #course-viewer {
-            padding: 2rem 5%;
-            background: #fff;
-            min-height: 100vh;
+        /* --- TABLES (Leaderboard & Tournaments) --- */
+        .styled-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            margin-bottom: 3rem;
         }
-        .back-btn {
-            display: inline-block;
-            margin-bottom: 2rem;
-            color: var(--primary);
-            font-weight: bold;
-            cursor: pointer;
-            border-bottom: 2px solid var(--accent);
+        .styled-table thead tr {
+            background-color: var(--primary);
+            color: #ffffff;
+            text-align: left;
         }
-        .course-header { margin-bottom: 3rem; border-bottom: 1px solid #eee; padding-bottom: 2rem; }
-        .course-header h1 { font-size: 3rem; margin-bottom: 1rem; }
-        
-        /* Layout for Video + Board */
+        .styled-table th, .styled-table td { padding: 15px 20px; }
+        .styled-table tbody tr { border-bottom: 1px solid #dddddd; }
+        .styled-table tbody tr:nth-of-type(even) { background-color: #f3f3f3; }
+        .styled-table tbody tr:last-of-type { border-bottom: 2px solid var(--primary); }
+        .rank-change.up { color: green; }
+        .rank-change.down { color: red; }
+        .join-btn {
+            padding: 5px 15px;
+            background: var(--primary);
+            color: white;
+            border-radius: 4px;
+            font-size: 0.8rem;
+        }
+
+        /* --- COURSE VIEWER --- */
         .learning-container {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 2rem;
             height: 600px;
         }
-        
-        /* Video Wrapper */
-        .video-wrapper {
-            background: #000;
-            border-radius: 8px;
-            overflow: hidden;
-            position: relative;
-        }
+        .video-wrapper { background: #000; border-radius: 8px; overflow: hidden; }
         .video-wrapper iframe { width: 100%; height: 100%; border: none; }
-
-        /* Board Wrapper */
-        .board-wrapper {
-            background: #f8f9fa;
-            border-radius: 8px;
-            border: 1px solid #ddd;
-            display: flex;
-            flex-direction: column;
-        }
-        .board-header {
-            padding: 1rem;
-            background: var(--primary);
-            color: white;
-            border-radius: 8px 8px 0 0;
-            font-weight: bold;
-        }
-        .board-embed { flex: 1; width: 100%; height: 100%; }
+        .board-wrapper { background: #f8f9fa; border-radius: 8px; border: 1px solid #ddd; }
+        .board-embed { width: 100%; height: 100%; border:none; }
+        
+        .back-nav { margin-bottom: 2rem; display: flex; align-items: center; gap: 10px; color: var(--primary); font-weight: bold; cursor: pointer; }
 
         @media (max-width: 900px) {
             .learning-container { grid-template-columns: 1fr; height: auto; }
             .video-wrapper, .board-wrapper { height: 400px; }
-            .nav-links a { margin-left: 1rem; font-size: 0.9rem; }
+            .nav-links { display: none; } /* Mobile menu hidden for simplicity in this demo */
         }
-
     </style>
 </head>
 <body>
 
     <nav>
-        <div class="logo" onclick="goHome()">Kaden Müller <span>Chess</span></div>
+        <div class="logo" onclick="switchPage('home')">Kaden Müller <span>Chess</span></div>
         <div class="nav-links">
-            <a onclick="goHome()">Academy Home</a>
-            <a onclick="goToPrograms()">Programs</a>
-            <a onclick="goToTournaments()">Tournaments</a>
-            <a onclick="goToLeaderboard()">Leaderboard</a>
-            <a href="#contact" class="cta-btn">Register</a>
+            <a onclick="switchPage('home')" id="nav-home" class="active">Academy Home</a>
+            <a onclick="switchPage('programs')" id="nav-programs">Programs</a>
+            <a onclick="switchPage('tournaments')" id="nav-tournaments">Tournaments</a>
+            <a onclick="switchPage('leaderboard')" id="nav-leaderboard">Leaderboard</a>
+            <a href="#contact" class="cta-btn">Join Now</a>
         </div>
     </nav>
 
-    <div id="home-view" class="view-section">
-        
-        <header>
+    <div id="view-home" class="page-view active">
+        <header class="hero">
             <h1>Master Your Move</h1>
-            <p>Elite chess coaching. Now available online for everyone.</p>
-            <br>
-            <button class="hero-btn" onclick="goToPrograms()">Start Learning Free</button>
+            <p>The premier academy for strategy, tactics, and mental discipline.</p>
+            <button class="hero-btn" onclick="switchPage('programs')">Start Learning Free</button>
         </header>
-
-        <section id="programs" class="section">
-            <h2 class="section-title">Select a Course</h2>
-            <div class="programs-grid">
-                
-                <div class="program-card" onclick="openCourse('pawn')">
-                    <h3>♙ The Pawn Foundation</h3>
-                    <p>Absolute beginner guide. Movement, rules, and basic checkmates.</p>
-                    <div class="click-hint">Click to watch lesson</div>
-                    <span class="price">Free for Students</span>
+        
+        <div class="container" style="padding-top: 4rem; text-align: center;">
+            <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 2rem;">
+                <div>
+                    <h3 style="font-size: 2rem;">150+</h3>
+                    <p>Active Students</p>
                 </div>
-
-                <div class="program-card" onclick="openCourse('openings')">
-                    <h3>📖 The Opening Lab</h3>
-                    <p>Master Openings.</p>
-                    <div class="click-hint">Click to watch lesson</div>
-                    <span class="price">Free for Students</span>
+                <div>
+                    <h3 style="font-size: 2rem;">10</h3>
+                    <p>Grandmaster Lessons</p>
                 </div>
-
-                <div class="program-card" onclick="openCourse('tactics')">
-                    <h3>⚔️ Tactical Mastery</h3>
-                    <p>Pins, skewers, forks, and discovered attacks. Spot the win.</p>
-                    <div class="click-hint">Click to watch lesson</div>
-                    <span class="price">Free for Students</span>
+                <div>
+                    <h3 style="font-size: 2rem;">Weekly</h3>
+                    <p>Prize Tournaments</p>
                 </div>
-
-                <div class="program-card" onclick="openCourse('endgame')">
-                    <h3>♔ Endgame Expert</h3>
-                    <p>King & Pawn endings, Lucena position, and Rook techniques.</p>
-                    <div class="click-hint">Click to watch lesson</div>
-                    <span class="price">Free for Students</span>
-                </div>
-
-                <div class="program-card" onclick="openCourse('gm')">
-                    <h3>🏆 My Game Analysis</h3>
-                    <p>Study some of my best games.</p>
-                    <div class="click-hint">Click to watch lesson</div>
-                    <span class="price">Free for Students</span>
-                </div>
-
-                <div class="program-card" onclick="openCourse('blitz')">
-                    <h3>⚡ Speed Chess Secrets</h3>
-                    <p>How to think fast, flag opponents, and manage clock pressure.</p>
-                    <div class="click-hint">Click to watch lesson</div>
-                    <span class="price">Free for Students</span>
-                </div>
-
             </div>
-        </section>
-
-        <footer id="contact" style="background:var(--primary); color:white; padding:4rem; text-align:center;">
-            <h2>Join the Academy</h2>
-            <p>Sign up to receive weekly puzzles and tournament invites.</p>
-        </footer>
+        </div>
     </div>
 
-    <div id="course-viewer" class="view-section hidden">
-        <div class="back-btn" onclick="goToPrograms()">← Back to Programs</div>
-        
-        <div class="course-header">
-            <h1 id="viewer-title">Course Title</h1>
-            <p id="viewer-desc">Course description goes here...</p>
-        </div>
-
-        <div class="learning-container">
-            <div class="video-wrapper">
-                <iframe id="video-frame" src="" allowfullscreen></iframe>
+    <div id="view-programs" class="page-view">
+        <div class="container">
+            <div class="page-header">
+                <h1>Academy Curriculum</h1>
+                <p>Select a free course to begin your journey.</p>
             </div>
 
-            <div class="board-wrapper">
-                <div class="board-header">♟️ Interactive Board & PGN Explorer</div>
-                <iframe id="pgn-frame" class="board-embed" src="" frameborder="0"></iframe>
+            <div class="programs-grid">
+                <div class="program-card" onclick="openCourse('pawn')">
+                    <h3>The Pawn Foundation <span class="card-icon">♙</span></h3>
+                    <p>Absolute beginner guide. Movement, rules, and basic checkmates.</p>
+                    <span class="price-tag">Free Access</span>
+                </div>
+                <div class="program-card" onclick="openCourse('openings')">
+                    <h3>The Opening Lab <span class="card-icon">📖</span></h3>
+                    <p>Master the London System and the Caro-Kann defense.</p>
+                    <span class="price-tag">Free Access</span>
+                </div>
+                <div class="program-card" onclick="openCourse('tactics')">
+                    <h3>Tactical Mastery <span class="card-icon">⚔️</span></h3>
+                    <p>Pins, skewers, forks, and discovered attacks. Spot the win.</p>
+                    <span class="price-tag">Free Access</span>
+                </div>
+                <div class="program-card" onclick="openCourse('endgame')">
+                    <h3>Endgame Expert <span class="card-icon">♔</span></h3>
+                    <p>King & Pawn endings, Lucena position, and Rook techniques.</p>
+                    <span class="price-tag">Free Access</span>
+                </div>
+                <div class="program-card" onclick="openCourse('blitz')">
+                    <h3>Speed Chess Secrets <span class="card-icon">⚡</span></h3>
+                    <p>How to think fast, flag opponents, and manage clock pressure.</p>
+                    <span class="price-tag">Free Access</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="view-tournaments" class="page-view">
+        <div class="container">
+            <div class="page-header">
+                <h1>Tournament Schedule</h1>
+                <p>Prove your skills. Win prizes. Climb the ranks.</p>
+            </div>
+
+            <table class="styled-table">
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Event Name</th>
+                        <th>Time Control</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Fri, 25 Oct</td>
+                        <td><strong>Friday Night Blitz</strong></td>
+                        <td>3+2 Blitz</td>
+                        <td><span style="color:green">Open</span></td>
+                        <td><a href="#" class="join-btn">Register</a></td>
+                    </tr>
+                    <tr>
+                        <td>Sat, 26 Oct</td>
+                        <td><strong>U16 Junior Championship</strong></td>
+                        <td>15+10 Rapid</td>
+                        <td><span style="color:orange">Filling Fast</span></td>
+                        <td><a href="#" class="join-btn">Register</a></td>
+                    </tr>
+                    <tr>
+                        <td>Sun, 27 Oct</td>
+                        <td><strong>Academy Monthly Shield</strong></td>
+                        <td>10+0 Rapid</td>
+                        <td><span style="color:green">Open</span></td>
+                        <td><a href="#" class="join-btn">Register</a></td>
+                    </tr>
+                    <tr>
+                        <td>Fri, 01 Nov</td>
+                        <td><strong>Speed King Arena</strong></td>
+                        <td>1+0 Bullet</td>
+                        <td>Upcoming</td>
+                        <td><button disabled>Waitlist</button></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div style="background: white; padding: 2rem; border-radius: 8px; border-left: 5px solid var(--accent);">
+                <h3>🏆 Tournament Rules</h3>
+                <ul style="margin-left: 20px; margin-top: 10px;">
+                    <li>Cheating is strictly prohibited and monitored by anti-cheat engines.</li>
+                    <li>Players must arrive 15 minutes before the first round.</li>
+                    <li>Berserking is allowed in Blitz arenas.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div id="view-leaderboard" class="page-view">
+        <div class="container">
+            <div class="page-header">
+                <h1>Academy Top Players</h1>
+                <p>Updated weekly based on tournament performance.</p>
+            </div>
+
+            <table class="styled-table">
+                <thead>
+                    <tr>
+                        <th>Rank</th>
+                        <th>Player Name</th>
+                        <th>Rating (Academy)</th>
+                        <th>Title</th>
+                        <th>Trend</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>#1</td>
+                        <td><strong>Kaden Müller</strong></td>
+                        <td>2450</td>
+                        <td>IM</td>
+                        <td>-</td>
+                    </tr>
+                    <tr>
+                        <td>#2</td>
+                        <td>Sarah Jenkins</td>
+                        <td>2105</td>
+                        <td>WnM</td>
+                        <td><span class="rank-change up">▲ 12</span></td>
+                    </tr>
+                    <tr>
+                        <td>#3</td>
+                        <td>David Ross</td>
+                        <td>2089</td>
+                        <td>-</td>
+                        <td><span class="rank-change down">▼ 5</span></td>
+                    </tr>
+                    <tr>
+                        <td>#4</td>
+                        <td>Michael Chen</td>
+                        <td>1950</td>
+                        <td>-</td>
+                        <td><span class="rank-change up">▲ 25</span></td>
+                    </tr>
+                    <tr>
+                        <td>#5</td>
+                        <td>Jessica Lee</td>
+                        <td>1875</td>
+                        <td>-</td>
+                        <td>-</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div id="view-viewer" class="page-view">
+        <div class="container">
+            <div class="back-nav" onclick="switchPage('programs')">
+                <span>← Back to Curriculum</span>
+            </div>
+            
+            <div style="margin-bottom: 2rem;">
+                <h1 id="viewer-title">Course Title</h1>
+                <p id="viewer-desc">Description...</p>
+            </div>
+
+            <div class="learning-container">
+                <div class="video-wrapper">
+                    <iframe id="video-frame" src="" allowfullscreen></iframe>
+                </div>
+                <div class="board-wrapper">
+                    <iframe id="pgn-frame" class="board-embed" src="" frameborder="0"></iframe>
+                </div>
             </div>
         </div>
     </div>
 
     <script>
-        // --- DATABASE OF COURSES ---
+        // --- NAVIGATION LOGIC ---
+        function switchPage(pageId) {
+            // 1. Hide all pages
+            const pages = document.querySelectorAll('.page-view');
+            pages.forEach(page => page.classList.remove('active'));
+
+            // 2. Show target page
+            // Special handling if switching to home, programs, etc.
+            if(pageId === 'viewer') {
+                document.getElementById('view-viewer').classList.add('active');
+            } else {
+                document.getElementById('view-' + pageId).classList.add('active');
+                
+                // Stop any playing video if leaving viewer
+                document.getElementById('video-frame').src = "";
+            }
+
+            // 3. Update Nav Links Styling
+            const links = document.querySelectorAll('.nav-links a');
+            links.forEach(link => link.classList.remove('active'));
+            
+            const activeLink = document.getElementById('nav-' + pageId);
+            if(activeLink) activeLink.classList.add('active');
+
+            // 4. Scroll to top
+            window.scrollTo(0,0);
+        }
+
+        // --- COURSE DATA ---
         const courseData = {
             'pawn': {
                 title: "The Pawn Foundation",
@@ -298,12 +440,6 @@
                 video: "https://www.youtube.com/embed/mCj8d8M9g9g",
                 pgn: "https://lichess.org/study/embed/A8jN9G50/3jXJ1Z1K#0"
             },
-            'gm': {
-                title: "Grandmaster Analysis",
-                desc: "Analyzing the 'Immortal Game' - Anderssen vs. Kieseritzky.",
-                video: "https://www.youtube.com/embed/0d2L3f8g8g8",
-                pgn: "https://lichess.org/study/embed/bJ5N9G80/4jXJ1Z1K#0"
-            },
             'blitz': {
                 title: "Speed Chess Secrets",
                 desc: "Tips and tricks for 3-minute and 5-minute games.",
@@ -312,46 +448,16 @@
             }
         };
 
-        // --- FUNCTIONS ---
-
         function openCourse(courseId) {
             const data = courseData[courseId];
-            if(!data) return; 
+            if(!data) return;
 
             document.getElementById('viewer-title').innerText = data.title;
             document.getElementById('viewer-desc').innerText = data.desc;
             document.getElementById('video-frame').src = data.video;
             document.getElementById('pgn-frame').src = data.pgn;
 
-            document.getElementById('home-view').classList.add('hidden');
-            document.getElementById('course-viewer').classList.remove('hidden');
-
-            window.scrollTo(0,0);
-        }
-
-        function goHome() {
-            // Stop Video (reset src)
-            document.getElementById('video-frame').src = "";
-            
-            // Hide Viewer, Show Home
-            document.getElementById('course-viewer').classList.add('hidden');
-            document.getElementById('home-view').classList.remove('hidden');
-            
-            // Scroll to top
-            window.scrollTo(0,0);
-        }
-
-        // NEW FUNCTION FOR THE PROGRAMS LINK
-        function goToPrograms() {
-            // Ensure we are on the home view first (in case we are in a course)
-            document.getElementById('video-frame').src = "";
-            document.getElementById('course-viewer').classList.add('hidden');
-            document.getElementById('home-view').classList.remove('hidden');
-
-            // Scroll down to the programs section
-            setTimeout(() => {
-                document.getElementById('programs').scrollIntoView({ behavior: 'smooth' });
-            }, 50);
+            switchPage('viewer');
         }
     </script>
 
