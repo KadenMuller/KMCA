@@ -19,13 +19,13 @@
         a { text-decoration: none; color: inherit; transition: 0.3s; cursor: pointer; }
         
         /* NAV */
-        nav { background: var(--primary); color: var(--accent); padding: 1rem 5%; display: flex; justify-content: space-between; align-items: center; }
+        nav { background: var(--primary); color: var(--accent); padding: 1rem 5%; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
         .logo { font-size: 1.5rem; font-weight: bold; }
         .logo span { color: white; }
-        .nav-links { display: flex; gap: 2rem; }
+        .nav-links { display: flex; gap: 2rem; align-items: center; }
         .nav-links a { color: var(--light); font-weight: 500; }
         .nav-links a:hover { color: var(--accent); }
-        .cta-btn { background: var(--accent); color: var(--primary) !important; padding: 0.5rem 1.5rem; border-radius: 4px; font-weight: bold; }
+        .cta-btn { background: var(--accent); color: var(--primary) !important; padding: 0.5rem 1.5rem; border-radius: 4px; font-weight: bold; border: none; cursor: pointer; }
 
         /* HERO */
         header {
@@ -37,16 +37,40 @@
         .hero-btn { background: var(--accent); color: var(--primary); padding: 1rem 2.5rem; font-size: 1.1rem; border-radius: 5px; font-weight: bold; border: none; cursor: pointer; margin-top: 2rem; }
         .hero-btn:hover { transform: scale(1.05); }
 
-        /* SECTIONS */
-        section { padding: 5rem 10%; border-bottom: 1px solid #e2e8f0; }
+        /* SECTIONS & LOCKING LOGIC */
+        section { padding: 5rem 10%; border-bottom: 1px solid #e2e8f0; position: relative; }
         .section-header { text-align: center; margin-bottom: 3rem; }
         
+        /* The Blur Effect for Locked Content */
+        .blur-content { filter: blur(8px); user-select: none; pointer-events: none; transition: 0.5s; }
+        
+        /* The Lock Overlay */
+        .lock-overlay {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            background: rgba(255, 255, 255, 0.4); z-index: 10;
+        }
+        .lock-msg { background: var(--primary); color: white; padding: 2rem; border-radius: 8px; text-align: center; box-shadow: 0 10px 25px rgba(0,0,0,0.2); }
+
         /* TABLES */
         .styled-table { width: 100%; border-collapse: collapse; background: white; border-radius: 10px; overflow: hidden; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
         .styled-table thead tr { background-color: var(--primary); color: white; text-align: left; }
         .styled-table th, .styled-table td { padding: 15px 20px; }
         .styled-table tbody tr { border-bottom: 1px solid #ddd; }
         .join-btn { padding: 6px 12px; background: var(--primary); color: white; border-radius: 4px; font-size: 0.8rem; }
+        
+        /* AUTH MODAL */
+        .modal-bg {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.8); z-index: 2000;
+            display: none; justify-content: center; align-items: center;
+        }
+        .modal-box {
+            background: white; padding: 3rem; border-radius: 10px; width: 100%; max-width: 400px; text-align: center;
+            border-top: 5px solid var(--accent);
+        }
+        .modal-box input { width: 100%; padding: 1rem; margin: 10px 0; border: 1px solid #ddd; border-radius: 5px; }
+        .modal-box button { width: 100%; padding: 1rem; background: var(--primary); color: white; border: none; font-weight: bold; cursor: pointer; margin-top: 1rem; }
         
         footer { background: var(--primary); color: var(--light); padding: 4rem 10%; text-align: center; }
     </style>
@@ -57,17 +81,18 @@
         <div class="logo">Kaden Müller <span>Chess</span></div>
         <div class="nav-links">
             <a href="index.html" style="color:var(--accent)">Home</a>
-            <a href="programs.html">Programs</a> 
+            <a onclick="handleProtectedLink('programs.html')">Programs</a> 
             <a href="#tournaments">Tournaments</a>
             <a href="#leaderboard">Leaderboard</a>
-            <a href="#contact" class="cta-btn">Join Now</a>
+            
+            <button id="nav-auth-btn" class="cta-btn" onclick="openModal()">Sign Up</button>
         </div>
     </nav>
 
     <header>
-        <h1>Master Your Move</h1>
+        <h1 id="hero-title">Master Your Move</h1>
         <p>The premier academy for strategy, tactics, and mental discipline.</p>
-        <a href="programs.html"><button class="hero-btn">Start Learning Free</button></a>
+        <button class="hero-btn" onclick="handleProtectedLink('programs.html')">Start Learning Free</button>
     </header>
 
     <section id="tournaments">
@@ -75,18 +100,25 @@
             <h2>Upcoming Tournaments</h2>
             <p>Register for our weekly rated events.</p>
         </div>
-        <table class="styled-table">
-            <thead>
-                <tr>
-                    <th>Date</th><th>Event</th><th>Format</th><th>Status</th><th>Register</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr><td>Fri, 25 Oct</td><td><strong>Friday Night Blitz</strong></td><td>3+2 Blitz</td><td><span style="color:green">Open</span></td><td><a href="#" class="join-btn">Join</a></td></tr>
-                <tr><td>Sat, 26 Oct</td><td><strong>U16 Championship</strong></td><td>15+10 Rapid</td><td><span style="color:orange">Filling</span></td><td><a href="#" class="join-btn">Join</a></td></tr>
-                <tr><td>Sun, 27 Oct</td><td><strong>Academy Shield</strong></td><td>10+0 Rapid</td><td><span style="color:green">Open</span></td><td><a href="#" class="join-btn">Join</a></td></tr>
-            </tbody>
-        </table>
+        
+        <div id="tourney-lock" class="lock-overlay">
+            <div class="lock-msg">
+                <h3>🔒 Members Only</h3>
+                <p>Sign up for free to view tournament schedules.</p>
+                <br>
+                <button class="cta-btn" onclick="openModal()">Sign Up Now</button>
+            </div>
+        </div>
+
+        <div id="tourney-content" class="blur-content">
+            <table class="styled-table">
+                <thead><tr><th>Date</th><th>Event</th><th>Format</th><th>Status</th><th>Action</th></tr></thead>
+                <tbody>
+                    <tr><td>Fri, 25 Oct</td><td><strong>Friday Night Blitz</strong></td><td>3+2</td><td>Open</td><td><a class="join-btn">Join</a></td></tr>
+                    <tr><td>Sat, 26 Oct</td><td><strong>U16 Championship</strong></td><td>15+10</td><td>Filling</td><td><a class="join-btn">Join</a></td></tr>
+                </tbody>
+            </table>
+        </div>
     </section>
 
     <section id="leaderboard">
@@ -94,24 +126,107 @@
             <h2>Top Players</h2>
             <p>Current Academy ELO Rankings.</p>
         </div>
-        <table class="styled-table">
-            <thead>
-                <tr><th>Rank</th><th>Player Name</th><th>Rating</th><th>Trend</th></tr>
-            </thead>
-            <tbody>
-                <tr><td>#1</td><td><strong>Kaden Müller</strong></td><td>2450</td><td>-</td></tr>
-                <tr><td>#2</td><td>Sarah Jenkins</td><td>2105</td><td><span style="color:green">▲ 12</span></td></tr>
-                <tr><td>#3</td><td>David Ross</td><td>2089</td><td><span style="color:red">▼ 5</span></td></tr>
-            </tbody>
-        </table>
+
+        <div id="leader-lock" class="lock-overlay">
+            <div class="lock-msg">
+                <h3>🔒 Members Only</h3>
+                <p>Join the academy to see the rankings.</p>
+                <br>
+                <button class="cta-btn" onclick="openModal()">Sign Up Now</button>
+            </div>
+        </div>
+
+        <div id="leader-content" class="blur-content">
+            <table class="styled-table">
+                <thead><tr><th>Rank</th><th>Player Name</th><th>Rating</th></tr></thead>
+                <tbody>
+                    <tr><td>#1</td><td><strong>Kaden Müller</strong></td><td>2450</td></tr>
+                    <tr><td>#2</td><td>Sarah Jenkins</td><td>2105</td></tr>
+                    <tr><td>#3</td><td>David Ross</td><td>2089</td></tr>
+                </tbody>
+            </table>
+        </div>
     </section>
 
     <footer id="contact">
         <h2>Join the Academy</h2>
-        <p>Ready to make your move? Contact us for private coaching.</p>
-        <br>
         <p>&copy; 2025 Kaden Müller Chess Academy</p>
     </footer>
 
+    <div id="auth-modal" class="modal-bg">
+        <div class="modal-box">
+            <h2 style="margin-bottom:1rem;">Student Registration</h2>
+            <p style="margin-bottom:1rem; color:#666;">Enter your details to unlock full access.</p>
+            <form onsubmit="handleSignup(event)">
+                <input type="text" id="username" placeholder="Full Name" required>
+                <input type="email" placeholder="Email Address" required>
+                <button type="submit">Create Account</button>
+            </form>
+            <p style="margin-top:1rem; font-size:0.8rem; cursor:pointer; text-decoration:underline;" onclick="closeModal()">Close</p>
+        </div>
+    </div>
+
+    <script>
+        // 1. Check Login Status on Page Load
+        window.onload = function() {
+            const user = localStorage.getItem('chessStudent');
+            if (user) {
+                unlockSite(user);
+            }
+        };
+
+        // 2. Open/Close Modal
+        function openModal() { document.getElementById('auth-modal').style.display = 'flex'; }
+        function closeModal() { document.getElementById('auth-modal').style.display = 'none'; }
+
+        // 3. Handle Sign Up Submission
+        function handleSignup(e) {
+            e.preventDefault();
+            const name = document.getElementById('username').value;
+            
+            // Save to browser storage (Simulated Database)
+            localStorage.setItem('chessStudent', name);
+            
+            closeModal();
+            unlockSite(name);
+            alert("Welcome to the Academy, " + name + "!");
+        }
+
+        // 4. Unlock the Site Visuals
+        function unlockSite(name) {
+            // Remove Blurs
+            document.getElementById('tourney-content').classList.remove('blur-content');
+            document.getElementById('leader-content').classList.remove('blur-content');
+            
+            // Remove Locks
+            document.getElementById('tourney-lock').style.display = 'none';
+            document.getElementById('leader-lock').style.display = 'none';
+
+            // Update Nav Button
+            const navBtn = document.getElementById('nav-auth-btn');
+            navBtn.innerText = "Log Out";
+            navBtn.style.background = "#ef4444"; // Red for logout
+            navBtn.onclick = handleLogout;
+
+            // Personalize Title
+            document.getElementById('hero-title').innerText = "Welcome back, " + name.split(' ')[0];
+        }
+
+        // 5. Protected Link Logic (For Programs Button)
+        function handleProtectedLink(url) {
+            const user = localStorage.getItem('chessStudent');
+            if (user) {
+                window.location.href = url;
+            } else {
+                openModal();
+            }
+        }
+
+        // 6. Logout
+        function handleLogout() {
+            localStorage.removeItem('chessStudent');
+            location.reload(); // Refresh page to re-lock
+        }
+    </script>
 </body>
 </html>
